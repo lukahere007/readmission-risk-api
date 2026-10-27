@@ -1,0 +1,10 @@
+# Serving dependencies. scikit-learn, pandas, numpy and joblib are pinned exactly to the
+# versions the committed model was trained with (see models/metadata.json): pickled
+# sklearn models are only guaranteed to load in the same version.
+scikit-learn==1.9.1
+pandas==3.0.6
+numpy==2.4.6
+joblib==1.6.0
+fastapi>=0.115,<1
+uvicorn>=0.30,<1
+pydantic>=2.7,<3

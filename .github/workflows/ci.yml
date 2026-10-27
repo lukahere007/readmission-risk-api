@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Unit + API tests
+        run: pytest -q
+      - name: Drift monitor CLI runs on demo batch
+        run: python -m readmission.monitor data/demo/perturbed_sample.csv.gz
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t readmission-risk-api:ci .
+      - name: Run container
+        run: docker run -d --name api -p 8000:8000 readmission-risk-api:ci
+      - name: Smoke test /health, /predict, /predict/batch, validation
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:8000/health && break
+            sleep 1
+          done
+          echo
+          curl -sf http://localhost:8000/health | grep -q '"status":"ok"'
+          curl -sf -X POST http://localhost:8000/predict \
+               -H 'Content-Type: application/json' -d @examples/single.json | tee single.out
+          echo
+          grep -q '"risk"' single.out
+          curl -sf -X POST http://localhost:8000/predict/batch \
+               -H 'Content-Type: application/json' -d @examples/batch.json | tee batch.out
+          echo
+          python3 -c "import json; assert len(json.load(open('batch.out'))['predictions']) == 3"
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X POST http://localhost:8000/predict \
+                 -H 'Content-Type: application/json' -d '{"age": "old"}')
+          test "$code" = "422"
+          docker exec api whoami | grep -q appuser
+      - name: Container logs
+        if: always()
+        run: docker logs api

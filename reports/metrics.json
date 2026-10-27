@@ -1,0 +1,121 @@
+{
+  "cohort": {
+    "raw_encounters": 101766,
+    "raw_patients": 71518,
+    "excluded_death_or_hospice": 2423,
+    "excluded_unknown_gender": 3,
+    "cohort_encounters": 99340,
+    "cohort_patients": 69987,
+    "prevalence_readmit_30d": 0.1138916851218039
+  },
+  "split": {
+    "method": "GroupShuffleSplit by patient_nbr",
+    "test_size": 0.2,
+    "seed": 42,
+    "train_encounters": 79567,
+    "test_encounters": 19773,
+    "train_patients": 55989,
+    "test_patients": 13998
+  },
+  "cv_train_groupkfold5": {
+    "logistic_regression": {
+      "roc_auc_mean": 0.6594833640998659,
+      "roc_auc_std": 0.005318179230663477,
+      "pr_auc_mean": 0.21130292650176052,
+      "pr_auc_std": 0.0067437111476294845
+    },
+    "gradient_boosting": {
+      "roc_auc_mean": 0.6710750570682326,
+      "roc_auc_std": 0.00554029027825414,
+      "pr_auc_mean": 0.22609445634742292,
+      "pr_auc_std": 0.008535877173506654
+    }
+  },
+  "test": {
+    "logistic_regression": {
+      "n": 19773,
+      "prevalence": 0.11348808981945077,
+      "roc_auc": 0.6721256366709447,
+      "pr_auc": 0.22580860426776914,
+      "brier": 0.09591865422405751,
+      "brier_baseline": 0.10060854328858304,
+      "log_loss": 0.3339065173581966,
+      "mean_predicted": 0.11363534188960961,
+      "roc_auc_95ci": [
+        0.6601351482168673,
+        0.6841851483687086
+      ],
+      "ece": 0.009092673030039439,
+      "top10": {
+        "top_fraction": 0.1,
+        "threshold": 0.1837239925582687,
+        "n_flagged": 1978,
+        "n_positive": 2244,
+        "true_positives": 524,
+        "recall": 0.23351158645276293,
+        "precision": 0.2649140546006067,
+        "lift": 2.3342894837868964,
+        "flagged_per_1000": 100.03540181054973,
+        "caught_per_1000": 26.5007838972336
+      }
+    },
+    "gradient_boosting": {
+      "n": 19773,
+      "prevalence": 0.11348808981945077,
+      "roc_auc": 0.6819407950298608,
+      "pr_auc": 0.238547824338455,
+      "brier": 0.09513674283757885,
+      "brier_baseline": 0.10060854328858304,
+      "log_loss": 0.33068823932797536,
+      "mean_predicted": 0.11315491784677487,
+      "roc_auc_95ci": [
+        0.6710875050526075,
+        0.6954796774958593
+      ],
+      "ece": 0.00579469168635272,
+      "top10": {
+        "top_fraction": 0.1,
+        "threshold": 0.19485183344499024,
+        "n_flagged": 1978,
+        "n_positive": 2244,
+        "true_positives": 563,
+        "recall": 0.25089126559714797,
+        "precision": 0.2846309403437816,
+        "lift": 2.5080247697939364,
+        "flagged_per_1000": 100.03540181054973,
+        "caught_per_1000": 28.473170485004804
+      }
+    }
+  },
+  "test_heuristic_prior_admissions": {
+    "roc_auc": 0.6139144360621039,
+    "pr_auc": 0.1914622969762366,
+    "top10": {
+      "top_fraction": 0.1,
+      "threshold": 2.000656608217923,
+      "n_flagged": 1978,
+      "n_positive": 2244,
+      "true_positives": 502,
+      "recall": 0.22370766488413546,
+      "precision": 0.2537917087967644,
+      "lift": 2.2362849634752324,
+      "flagged_per_1000": 100.03540181054973,
+      "caught_per_1000": 25.38815556567036
+    }
+  },
+  "selected_model": "gradient_boosting",
+  "leakage_experiment": [
+    {
+      "split": "grouped (by patient)",
+      "roc_auc_mean": 0.6712116995412998,
+      "roc_auc_std": 0.008223654844376798,
+      "shared_patients_mean": 0.0
+    },
+    {
+      "split": "random (by encounter)",
+      "roc_auc_mean": 0.6742194588302131,
+      "roc_auc_std": 0.004374816887737239,
+      "shared_patients_mean": 6729.2
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+seed,split,roc_auc,test_patients_also_in_train
+0,random (by encounter),0.6817,6697
+0,grouped (by patient),0.6660,0
+1,random (by encounter),0.6705,6793
+1,grouped (by patient),0.6734,0
+2,random (by encounter),0.6733,6716
+2,grouped (by patient),0.6614,0
+3,random (by encounter),0.6735,6708
+3,grouped (by patient),0.6720,0
+4,random (by encounter),0.6721,6732
+4,grouped (by patient),0.6832,0

@@ -1,0 +1,36 @@
+name: Fetch data
+
+on:
+  push:
+    branches: [claude/github-projects-improve-nh2reo]
+    paths:
+      - scripts/fetch_data.py
+      - .github/workflows/fetch-data.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Download UCI dataset 296
+        run: python scripts/fetch_data.py
+      - name: Commit data snapshot if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No data changes"
+          else
+            git commit -m "Update data snapshot"
+            git push
+          fi
