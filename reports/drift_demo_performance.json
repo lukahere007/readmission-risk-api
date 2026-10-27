@@ -1,0 +1,19 @@
+{
+  "test": {
+    "n": 19773,
+    "prevalence": 0.1135,
+    "mean_predicted": 0.1132,
+    "roc_auc": 0.6819
+  },
+  "late_encounter_ids": {
+    "n": 3955,
+    "prevalence": 0.1049,
+    "mean_predicted": 0.1165,
+    "roc_auc": 0.6958
+  },
+  "perturbed": {
+    "n": 19773,
+    "prevalence": 0.1135,
+    "mean_predicted": 0.1249
+  }
+}
