@@ -48,7 +48,7 @@ def download(url: str, retries: int = 4) -> bytes:
 
 def find_member(zf: zipfile.ZipFile, name: str) -> bytes:
     for info in zf.infolist():
-        if Path(info.filename).name == name:
+        if Path(info.filename).name.lower() == name.lower():
             return zf.read(info)
         if info.filename.endswith(".zip"):  # nested archive
             inner = zipfile.ZipFile(io.BytesIO(zf.read(info)))
